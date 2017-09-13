@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>系统默认信息窗体展示</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main.css"/>
+    <script type="text/javascript"
+            src="https://webapi.amap.com/maps?v=1.4.0&key=dc6703c9c958fa056f0b0e077e920051"></script>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+        .amap-info-close{
+          top:10px;
+        }
+        .taiwan{
+      	border: solid 1px red;
+      	color: red;
+      	float: left;
+      	width: 50px;
+      	background-color: rgba(255,0,0,0.1);
+      	margin: 5px auto
+      }
+    </style>
+</head>
+<body>
+<div id="mapContainer"></div>
+<script type="text/javascript">
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("mapContainer", {
+        resizeEnable: true,
+        zoom: 13
+    });
+     var lnglats=[{
+     	position: [116.368904,39.923423],
+     	name: '地方一'
+     },{
+     	position: [116.382122,39.921176],
+     	name: '地方二'
+     },{
+     	position: [116.387271,39.922501],
+     	name: '地方三'
+     },{
+     	position: [116.398258,39.914600],
+     	name: '地方四'
+     }];
+    for(var i= 0,marker;i<lnglats.length;i++){
+    	var icon = new AMap.Icon({
+			image: 'https://vdata.amap.com/icons/b18/1/2.png',
+			size: new AMap.Size(24, 24)
+		});
+          var marker=new AMap.Marker({
+          	  icon: icon,
+              position:lnglats[i].position,
+              map:map
+          });
+          var content= "<div class = 'taiwan'>"+lnglats[i].name+"</div>";
+          var baodao = new AMap.Marker({
+            content: content,
+            position: lnglats[i].position,
+            title: lnglats[i].name,
+            offset: new AMap.Pixel(0,0),
+            map: map
+          });
+          map.setCenter(baodao.getPosition());
+    }
+    map.setFitView();
+</script>
+ <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+
+</body>
+</html>

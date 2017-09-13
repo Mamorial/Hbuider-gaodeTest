@@ -1,0 +1,15 @@
+{
+  "index2.html": {
+    "href": "index2.html",
+    "priority": 0,
+    "resources": [],
+    "refer": []
+  },
+  "index.html": {
+    "resources": [
+      "js/mui.min.js",
+      "fonts/mui.ttf",
+      "css/mui.min.css"
+    ]
+  }
+}

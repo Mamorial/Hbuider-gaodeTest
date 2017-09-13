@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <script type="text/javascript" charset="utf-8">
+      	mui.init({
+//    		gestureConfig: {
+//    			doubletap: true
+//    		},
+//    		subpages: [{
+//    			url: './page/sub1.html',
+//    			id: 'sub1.html',
+//    			styles: {
+//    				top: '50px',
+//    				bottom: '45px'
+//    			}
+//    		}]
+      	});
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+	    <h1 class="mui-title">首页</h1>
+	</header>
+	<nav class="mui-bar mui-bar-tab">
+	    <a class="mui-tab-item mui-active" href="#page1">
+	        <span class="mui-icon mui-icon-home"></span>
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item" href="#page2">
+	        <span class="mui-icon mui-icon-phone"></span>
+	        <span class="mui-tab-label">电话</span>
+	    </a>
+	    <a class="mui-tab-item" href="#page3">
+	        <span class="mui-icon mui-icon-email"></span>
+	        <span class="mui-tab-label">邮件</span>
+	    </a>
+	    <a class="mui-tab-item" href="#page4">
+	        <span class="mui-icon mui-icon-gear"></span>
+	        <span class="mui-tab-label">设置</span>
+	    </a>
+	</nav>
+	<!--<div class="mui-content">
+		<div id="page1" class="mui-control-content mui-active">
+			<div class="mui-title">这是page1</div>
+
+		</div>
+		<div id="page2" class="mui-control-content">
+			<div class="mui-title">这是page2</div>
+		</div>
+		<div id="page3" class="mui-control-content">
+			<div class="mui-title">这是page3</div>
+		</div>
+		<div id="page4" class="mui-control-content">
+			<div class="mui-title">这是page4</div>
+		</div>
+	</div>-->
+</body>
+</html>
+<script type="text/javascript">
+	var subInfos = [{
+		url: 'page/sub1.html',
+		id: 'sub1'
+	},{
+		url: 'page/sub2.html',
+		id: 'sub2'
+	},{
+		url: 'page/sub3.html',
+		id: 'sub3'
+	},{
+		url: 'page/sub4.html',
+		id: 'sub4'
+	}];
+	var getSubInfoById = function(infoList, id) {
+		var result = null;
+		for(var i = 0, len = infoList.length; i < len; i++) {
+			var _info = infoList[i];
+			if(_info.id === id) {
+				result = _info;
+				break;
+			}
+		}
+		return result;
+	}
+	var mainWv = plus.webview.currentWebview();
+	var titleEL = document.querySelector('.mui-title');
+	var activeTab = '';
+
+	// 默认只加载首页webview
+	var homeWv = plus.webview.create(subInfos[0].url, subInfos[0].id, subStyles);
+	mainWv.append(homeWv);
+	activeTab = subInfos[0].id;
+	mui('.mui-bar-tab').on('tap', 'a.mui-tab-item', function(e) {
+    var _self = this;
+    var targetTab = _self.getAttribute('href');
+    if(targetTab === activeTab) {
+        return;
+    }
+    titleEL.innerText = _self.querySelector('.mui-tab-label').innerText;
+    var _subWv = plus.webview.getWebviewById(targetTab);
+    // 若webview不存在，则创建；
+    if(!_subWv) {
+        var _subInfo = getSubInfoById(subInfos, targetTab);
+        _subWv = plus.webview.create(_subInfo.url, _subInfo.id, subStyles);
+        mainWv.append(_subWv);
+    }
+        _subWv.show();
+    // 隐藏之前的webview
+    plus.webview.getWebviewById(activeTab).hide('none');
+        activeTab = targetTab;
+    });
+</script>
